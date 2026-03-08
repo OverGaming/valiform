@@ -13,12 +13,14 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: resolve(__dirname, 'index.ts'),
-      name: 'Valiform',
-      fileName: 'index'
+      entry: {
+        index: resolve(__dirname, 'index.ts'),
+        nuxt: resolve(__dirname, 'src/nuxt.ts'),
+      },
+      formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      external: ['vue'],
+      external: ['vue', '@nuxt/kit'],
       output: {
         globals: {
           vue: 'Vue'
