@@ -92,33 +92,6 @@ Then use it inside a `<Field>`:
 </template>
 ```
 
-### With native inputs
-
-For native HTML `<input>` elements, use `setValue` and `inputValue` from the slot:
-
-```vue
-<template>
-  <Form v-model="formData" @submit="handleSubmit" v-slot="{ isValid }">
-    <Field
-      name="name"
-      validation="required|min:3"
-      v-slot="{ inputProps, inputValue, setValue, error, isTouched }"
-    >
-      <label :for="inputProps.id">Name</label>
-      <input
-        v-bind="inputProps"
-        :value="inputValue"
-        @input="setValue($event.target.value)"
-        type="text"
-      />
-      <span v-if="error && isTouched">{{ error }}</span>
-    </Field>
-
-    <button type="submit" :disabled="!isValid">Submit</button>
-  </Form>
-</template>
-```
-
 ---
 
 ## Components
@@ -155,21 +128,20 @@ Manages a single field's state and validation.
 | `error`              | `string \| string[]`      | External error (e.g. from API)          |
 | `id`                 | `string`                  | Override the auto-generated input id    |
 
-| Slot prop    | Type                       | Description                                                                                               |
-| ------------ | -------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `inputProps` | `object`                   | Props for custom Vue components (`modelValue`, `onUpdate:modelValue`, `onBlur`, `id`, `name`, aria attrs) |
-| `inputValue` | `unknown`                  | Current field value (writable)                                                                            |
-| `labelProps` | `{ for: string }`          | Props for `<label>`                                                                                       |
-| `errorProps` | `{ id, role, aria-live }`  | Props for the error element                                                                               |
-| `helpProps`  | `{ id: string }`           | Props for a help text element                                                                             |
-| `error`      | `string \| null`           | First error message                                                                                       |
-| `errors`     | `string[]`                 | All error messages                                                                                        |
-| `isValid`    | `boolean`                  | Whether the field is valid                                                                                |
-| `isTouched`  | `boolean`                  | Whether the field has been blurred                                                                        |
-| `isDirty`    | `boolean`                  | Whether the value has changed                                                                             |
-| `setValue`   | `(value: unknown) => void` | Updates the field value (use with native inputs)                                                          |
-| `validate`   | `() => void`               | Triggers validation manually                                                                              |
-| `reset`      | `() => void`               | Resets to initial value                                                                                   |
+| Slot prop    | Type                      | Description                                                                                               |
+| ------------ | ------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `inputProps` | `object`                  | Props for custom Vue components (`modelValue`, `onUpdate:modelValue`, `onBlur`, `id`, `name`, aria attrs) |
+| `inputValue` | `unknown`                 | Current field value (writable)                                                                            |
+| `labelProps` | `{ for: string }`         | Props for `<label>`                                                                                       |
+| `errorProps` | `{ id, role, aria-live }` | Props for the error element                                                                               |
+| `helpProps`  | `{ id: string }`          | Props for a help text element                                                                             |
+| `error`      | `string \| null`          | First error message                                                                                       |
+| `errors`     | `string[]`                | All error messages                                                                                        |
+| `isValid`    | `boolean`                 | Whether the field is valid                                                                                |
+| `isTouched`  | `boolean`                 | Whether the field has been blurred                                                                        |
+| `isDirty`    | `boolean`                 | Whether the value has changed                                                                             |
+| `validate`   | `() => void`              | Triggers validation manually                                                                              |
+| `reset`      | `() => void`              | Resets to initial value                                                                                   |
 
 ---
 
