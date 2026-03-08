@@ -1,5 +1,11 @@
 <template>
-  <Field v-slot="field" v-model="value" :name="name ?? 'name'" :validation="validation ?? null" :validation-messages="validationMessages ?? null">
+  <Field
+    v-slot="field"
+    v-model="value"
+    :name="name ?? 'name'"
+    :validation="validation ?? null"
+    :validation-messages="validationMessages ?? null"
+  >
     <label v-bind="field.labelProps">Name</label>
     <CustomInput v-bind="field.inputProps" placeholder="Enter your full name" />
     <p v-bind="field.helpProps">Write your full name</p>
@@ -14,17 +20,17 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
-  import Field from '../../Field.vue'
-  import CustomInput from './CustomInput.vue'
-  import { useLocale } from '../../../composables/useLocale'
+  import { ref } from 'vue';
+  import Field from '../../Field.vue';
+  import CustomInput from './CustomInput.vue';
+  import { useLocale } from '../../../composables/useLocale';
 
   const props = withDefaults(
     defineProps<{
-      name?: string
-      initialValue?: string
-      validation?: string | ((value: unknown) => unknown) | null
-      validationMessages?: Record<string, unknown> | null
+      name?: string;
+      initialValue?: string;
+      validation?: string | ((value: unknown) => unknown) | null;
+      validationMessages?: Record<string, unknown> | null;
     }>(),
     {
       name: 'name',
@@ -32,13 +38,13 @@
       validation: null,
       validationMessages: null
     }
-  )
+  );
 
-  const { locale, setLocale } = useLocale()
+  const { locale, setLocale } = useLocale();
 
   const changeLocale = () => {
-    setLocale(locale.value === 'en' ? 'es' : 'en')
-  }
+    setLocale(locale.value === 'en' ? 'es' : 'en');
+  };
 
-  const value = ref(props.initialValue)
+  const value = ref(props.initialValue);
 </script>

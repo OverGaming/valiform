@@ -63,17 +63,17 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
-  import Form from '../../Form.vue'
-  import Field from '../../Field.vue'
-  import CustomInput from './CustomInput.vue'
-  import { useLocale } from '../../../composables/useLocale'
+  import { ref } from 'vue';
+  import Form from '../../Form.vue';
+  import Field from '../../Field.vue';
+  import CustomInput from './CustomInput.vue';
+  import { useLocale } from '../../../composables/useLocale';
 
   interface FormValues {
-    name: string
-    email: string
-    password: string
-    confirmPassword: string
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
   }
 
   const props = withDefaults(
@@ -81,16 +81,16 @@
       handleSubmit?: (
         values: Record<string, unknown>,
         helpers: { setErrors: (...args: unknown[]) => void; reset: () => void }
-      ) => void
-      initialValues?: FormValues
+      ) => void;
+      initialValues?: FormValues;
     }>(),
     {
       handleSubmit: () => {},
       initialValues: () => ({ name: '', email: '', password: '', confirmPassword: '' })
     }
-  )
+  );
 
-  const { locale, setLocale } = useLocale()
+  const { locale, setLocale } = useLocale();
 
-  const form = ref(props.initialValues)
+  const form = ref(props.initialValues);
 </script>

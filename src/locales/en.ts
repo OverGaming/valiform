@@ -1,4 +1,4 @@
-import type { LocaleMessages } from '../types'
+import type { LocaleMessages } from '../types';
 
 export const en: LocaleMessages = {
   required: 'This field is required',
@@ -30,30 +30,30 @@ export const en: LocaleMessages = {
   dateFormat: ({ format }) => `Must match the format ${format}`,
   endsWith: ({ suffix }) => {
     if (Array.isArray(suffix)) {
-      return `Must end with one of: ${suffix.map((s) => `"${s}"`).join(', ')}`
+      return `Must end with one of: ${suffix.map((s) => `"${s}"`).join(', ')}`;
     }
-    return `Must end with "${suffix}"`
+    return `Must end with "${suffix}"`;
   },
   is: ({ allowedValues }) =>
     `Must be one of: ${Array.isArray(allowedValues) ? allowedValues.join(', ') : allowedValues}`,
   length: ({ value, min, max }) => {
     if (min !== undefined && max !== undefined) {
-      return `Must be between ${min} and ${max} characters`
+      return `Must be between ${min} and ${max} characters`;
     } else if (value !== undefined) {
-      return `Must be exactly ${value} characters`
+      return `Must be exactly ${value} characters`;
     }
-    return 'Invalid length'
+    return 'Invalid length';
   },
   lowercase: 'Must contain only lowercase characters',
   not: ({ disallowedValues }) =>
     `Must not be one of: ${Array.isArray(disallowedValues) ? disallowedValues.join(', ') : disallowedValues}`,
   startsWith: ({ prefix }) => {
     if (Array.isArray(prefix)) {
-      return `Must start with one of: ${prefix.join(', ')}`
+      return `Must start with one of: ${prefix.join(', ')}`;
     }
-    return `Must start with "${prefix}"`
+    return `Must start with "${prefix}"`;
   },
   symbol: 'Must contain only symbols',
   uppercase: 'Must contain only uppercase characters',
   url: 'Must be a valid URL'
-}
+};

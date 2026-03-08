@@ -8,27 +8,27 @@ export default defineConfig({
     vue(),
     dts({
       include: ['index.ts', 'src/**/*'],
-      outDir: 'dist',
-    }),
+      outDir: 'dist'
+    })
   ],
   build: {
     lib: {
       entry: resolve(__dirname, 'index.ts'),
       name: 'Valiform',
-      fileName: 'index',
+      fileName: 'index'
     },
     rollupOptions: {
       external: ['vue'],
       output: {
         globals: {
-          vue: 'Vue',
-        },
-      },
-    },
+          vue: 'Vue'
+        }
+      }
+    }
   },
   test: {
     environment: 'jsdom',
     globals: true,
-    setupFiles: ['./src/test/setup.ts'],
-  },
+    setupFiles: ['./src/test/setup.ts']
+  }
 });

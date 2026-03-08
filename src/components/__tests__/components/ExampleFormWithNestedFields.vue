@@ -97,22 +97,22 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
-  import Form from '../../Form.vue'
-  import Field from '../../Field.vue'
-  import CustomInput from './CustomInput.vue'
-  import { useLocale } from '../../../composables/useLocale'
-  import CustomSelect from './CustomSelect.vue'
+  import { ref } from 'vue';
+  import Form from '../../Form.vue';
+  import Field from '../../Field.vue';
+  import CustomInput from './CustomInput.vue';
+  import { useLocale } from '../../../composables/useLocale';
+  import CustomSelect from './CustomSelect.vue';
 
   interface Skill {
-    name: string
-    level: string
+    name: string;
+    level: string;
   }
 
   interface FormValues {
-    user: { firstName: string; lastName: string; email: string }
-    address: { street: string; city: string; postalCode: string }
-    skills: Skill[]
+    user: { firstName: string; lastName: string; email: string };
+    address: { street: string; city: string; postalCode: string };
+    skills: Skill[];
   }
 
   const props = withDefaults(
@@ -120,8 +120,8 @@
       handleSubmit?: (
         values: Record<string, unknown>,
         helpers: { setErrors: (...args: unknown[]) => void; reset: () => void }
-      ) => void
-      initialValues?: FormValues
+      ) => void;
+      initialValues?: FormValues;
     }>(),
     {
       handleSubmit: () => {},
@@ -131,19 +131,19 @@
         skills: [{ name: '', level: '' }]
       })
     }
-  )
+  );
 
-  const { locale, setLocale } = useLocale()
+  const { locale, setLocale } = useLocale();
 
-  const form = ref(props.initialValues)
+  const form = ref(props.initialValues);
 
   function addSkill() {
-    form.value.skills.push({ name: '', level: '' })
+    form.value.skills.push({ name: '', level: '' });
   }
 
   function removeSkill(index: number) {
     if (form.value.skills.length > 1) {
-      form.value.skills.splice(index, 1)
+      form.value.skills.splice(index, 1);
     }
   }
 </script>

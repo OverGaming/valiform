@@ -2,20 +2,29 @@
   "name": "@overgaming/valiform",
   "version": "0.1.0",
   "description": "Vue 3 form validation library",
+  "keywords": [
+    "form",
+    "nuxt",
+    "validation",
+    "vue",
+    "vue3"
+  ],
+  "license": "MIT",
+  "author": "OverGaming",
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     }
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "vite build && vue-tsc --declaration --emitDeclarationOnly --outDir dist",
     "dev": "vite build --watch",
@@ -27,19 +36,6 @@
     "format:check": "oxfmt . --check",
     "typecheck": "vue-tsc --noEmit",
     "prepublishOnly": "npm run build"
-  },
-  "keywords": [
-    "vue",
-    "vue3",
-    "form",
-    "validation",
-    "nuxt"
-  ],
-  "author": "OverGaming",
-  "license": "MIT",
-  "peerDependencies": {
-    "@vueuse/core": "^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0 || ^14.0.0",
-    "vue": "^3.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
@@ -56,5 +52,9 @@
     "vitest": "^4.0.18",
     "vue": "^3.4.0",
     "vue-tsc": "^2.0.0"
+  },
+  "peerDependencies": {
+    "@vueuse/core": "^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0 || ^14.0.0",
+    "vue": "^3.0.0"
   }
 }
