@@ -1,2 +1,2 @@
-export { default } from './src/nuxt'
-export type { ModuleOptions } from './src/nuxt'
+export { default } from './src/nuxt';
+export type { ModuleOptions } from './src/nuxt';

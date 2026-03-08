@@ -15,9 +15,9 @@ export default defineConfig({
     lib: {
       entry: {
         index: resolve(__dirname, 'index.ts'),
-        nuxt: resolve(__dirname, 'nuxt.ts'),
+        nuxt: resolve(__dirname, 'nuxt.ts')
       },
-      formats: ['es', 'cjs'],
+      formats: ['es', 'cjs']
     },
     rollupOptions: {
       external: ['vue', '@nuxt/kit'],
