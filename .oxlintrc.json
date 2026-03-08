@@ -1,0 +1,12 @@
+{
+  "plugins": ["import", "vue"],
+  "rules": {
+    "import/no-cycle": "error",
+    "import/no-self-import": "error",
+    "import/no-amd": "error",
+    "import/no-commonjs": "warn",
+    "import/first": "error",
+    "import/no-duplicates": "error",
+    "import/order": "warn"
+  }
+}
