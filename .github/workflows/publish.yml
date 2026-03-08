@@ -7,9 +7,6 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-
     steps:
       - uses: actions/checkout@v4
 
@@ -24,6 +21,6 @@ jobs:
       - name: Set version from tag
         run: npm version ${GITHUB_REF_NAME#v} --no-git-tag-version
 
-      - run: npm publish --provenance --access public
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
