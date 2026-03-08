@@ -12,6 +12,7 @@
         isDirty,
         error,
         errors,
+        setValue,
         validate: _validation.validate,
         reset
       }"
@@ -86,6 +87,13 @@
 
   const setErrors = (errorInput: string | string[]): void => {
     manualErrors.value = Array.isArray(errorInput) ? errorInput : [errorInput];
+  };
+
+  const setValue = (value: unknown): void => {
+    inputValue.value = value;
+    if (!isDirty.value && value !== initialValue) {
+      isDirty.value = true;
+    }
   };
 
   const reset = (): void => {
