@@ -46,32 +46,50 @@ The Nuxt module auto-imports `<Form>`, `<Field>`, `useLocale`, `useFormContext` 
 
 ### With custom components (recommended)
 
-`inputProps` is designed to be used with **custom Vue components** that support `v-model` — i.e. components that accept a `modelValue` prop and emit `update:modelValue`.
+Build a custom input component using `useFieldContext` and `defineModel`:
+
+```vue
+<!-- MyInput.vue -->
+<template>
+  <input
+    class="my-input"
+    :class="{ 'my-input--error': error }"
+    v-model.trim="inputValue"
+    v-bind="inputProps"
+    :type
+  />
+</template>
+
+<script setup lang="ts">
+  import { useFieldContext } from '@overgaming/valiform';
+
+  defineProps({
+    type: { type: String, default: 'text' }
+  });
+
+  const model = defineModel({ type: String, default: '' });
+  const { inputValue, inputProps, error } = useFieldContext({ inputValue: model });
+</script>
+```
+
+Then use it inside a `<Field>`:
 
 ```vue
 <template>
   <Form v-model="formData" @submit="handleSubmit" v-slot="{ isValid }">
-    <Field name="name" validation="required|min:3" v-slot="{ inputProps, error, isTouched }">
-      <label :for="inputProps.id">Name</label>
-      <MyInput v-bind="inputProps" />
-      <span v-if="error && isTouched">{{ error }}</span>
+    <Field
+      name="name"
+      validation="required|min:3"
+      v-slot="{ labelProps, errorProps, error, isTouched }"
+    >
+      <label v-bind="labelProps">Name</label>
+      <MyInput />
+      <span v-if="error && isTouched" v-bind="errorProps">{{ error }}</span>
     </Field>
 
     <button type="submit" :disabled="!isValid">Submit</button>
   </Form>
 </template>
-```
-
-```vue
-<!-- MyInput.vue -->
-<template>
-  <input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" />
-</template>
-
-<script setup lang="ts">
-  defineProps<{ modelValue?: unknown }>();
-  defineEmits(['update:modelValue']);
-</script>
 ```
 
 ### With native inputs
@@ -255,12 +273,17 @@ Access the parent `<Form>` state from any descendant component.
 const { values, isValid, errors, reset, validate, setErrors } = useFormContext();
 ```
 
-### `useFieldContext()`
+### `useFieldContext(options?)`
 
-Access the parent `<Field>` state from any descendant component.
+Access the parent `<Field>` state from any descendant component. Optionally pass `{ inputValue }` to sync a local ref (e.g. from `defineModel`) bidirectionally with the field value.
 
 ```ts
+// Basic usage
 const { inputValue, inputProps, error, isValid, isTouched, isDirty } = useFieldContext();
+
+// With defineModel sync
+const model = defineModel({ type: String, default: '' });
+const { inputValue, inputProps, error } = useFieldContext({ inputValue: model });
 ```
 
 ### `useLocale()`
