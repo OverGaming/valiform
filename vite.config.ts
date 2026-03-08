@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     vue(),
     dts({
-      include: ['index.ts', 'src/**/*'],
+      include: ['index.ts', 'nuxt.ts', 'src/**/*'],
       outDir: 'dist'
     })
   ],
@@ -15,7 +15,7 @@ export default defineConfig({
     lib: {
       entry: {
         index: resolve(__dirname, 'index.ts'),
-        nuxt: resolve(__dirname, 'src/nuxt.ts'),
+        nuxt: resolve(__dirname, 'nuxt.ts'),
       },
       formats: ['es', 'cjs'],
     },
