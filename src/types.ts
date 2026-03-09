@@ -48,7 +48,7 @@ export type InputProps = {
 };
 
 export interface FieldContext {
-  inputValue: WritableComputedRef<unknown>;
+  inputValue: WritableComputedRef<unknown> | Ref<unknown>;
   inputProps: ComputedRef<InputProps>;
   labelProps: { for: string };
   helpProps: { id: string };
