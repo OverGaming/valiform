@@ -11,29 +11,45 @@ export const useFieldContextProvider = (data: FieldContext): void => {
 /**
  * Retrieves the `FieldContext` provided by the nearest `Field` component ancestor.
  *
- * @param defaultData - Fallback value when no `Field` ancestor is found.
- *   - Pass `null` (default) when the component only reads from context and
- *     must always be used inside a `Field`. The return value will be `null`
- *     if no context exists — use the non-null assertion (`!`) when you are
- *     certain the component is always rendered inside a `Field`.
- *   - Pass a partial `FieldContext` (e.g. `{ inputValue: model }`) when the
- *     component can also work standalone. In that case the provided object is
- *     used as fallback and the component handles the nullable fields
- *     defensively.
+ * **Three call signatures:**
+ *
+ * - `useFieldContext()` — no args. Returns `FieldContext` directly (no `!` needed).
+ *   Throws at runtime if called outside a `Field`. Use this for components that
+ *   must always be nested inside a `Field` (e.g. `FieldLabel`, `FieldError`).
+ *
+ * - `useFieldContext(fallback: FieldContext)` — with a fallback object. Returns
+ *   `FieldContext` directly (no `!` needed). Use this for components that can work
+ *   both inside and outside a `Field` (e.g. standalone inputs with `v-model`).
+ *
+ * - `useFieldContext(null)` — explicit null. Returns `FieldContext | null`.
+ *   Use when you want to handle the absence of context manually.
  *
  * @example
- * // Inside a Field — always has context, assert non-null:
- * const { labelProps } = useFieldContext(null)!;
+ * // Always inside a Field — throws at runtime if misused:
+ * const { labelProps } = useFieldContext();
  *
  * @example
  * // Standalone-capable input — works inside or outside a Field:
  * const model = defineModel<string>({ default: '' });
- * const { inputValue, inputProps } = useFieldContext({ inputValue: model })!;
+ * const { inputValue, inputProps } = useFieldContext({ inputValue: model });
+ *
+ * @example
+ * // Manual null-handling:
+ * const ctx = useFieldContext(null);
+ * if (ctx) { ... }
  *
  * @example
  * // ❌ Wrong — `{}` does not satisfy FieldContext and will cause a type error:
  * const { labelProps } = useFieldContext({});
  */
-export const useFieldContext = (defaultData: FieldContext | null = null): FieldContext | null => {
+export function useFieldContext(): FieldContext;
+export function useFieldContext(defaultData: null): FieldContext | null;
+export function useFieldContext(defaultData: FieldContext): FieldContext;
+export function useFieldContext(defaultData?: FieldContext | null): FieldContext | null {
+  if (defaultData === undefined) {
+    const context = inject(fieldContextKey);
+    if (!context) throw new Error('useFieldContext() must be called inside a Field component');
+    return context;
+  }
   return inject(fieldContextKey, defaultData);
-};
+}
