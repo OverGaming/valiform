@@ -8,5 +8,14 @@ export { useLocale } from './src/composables/useLocale';
 export { useFormContext } from './src/context/useFormContext';
 export { useFieldContext } from './src/context/useFieldContext';
 
+export type {
+  FieldContext,
+  FieldState,
+  FormContext,
+  InputProps,
+  RuleFunction,
+  FormsPluginOptions
+} from './src/types';
+
 export { en } from './src/locales/en';
 export { es } from './src/locales/es';
