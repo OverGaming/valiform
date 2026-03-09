@@ -7,7 +7,8 @@ export default defineConfig({
   plugins: [
     vue(),
     dts({
-      include: ['src/**/*', 'nuxt/index.ts'],
+      include: ['src/**/*', 'nuxt/module.ts'],
+      exclude: ['nuxt/runtime/**'],
       outDir: 'dist'
     })
   ],
@@ -15,7 +16,7 @@ export default defineConfig({
     lib: {
       entry: {
         index: resolve(__dirname, 'src/index.ts'),
-        nuxt: resolve(__dirname, 'nuxt/index.ts'),
+        nuxt: resolve(__dirname, 'nuxt/module.ts'),
         // Runtime plugin compiled separately so Nuxt can inject it into the user's app.
         // #app and #build/* are Nuxt virtual modules resolved at the user's build time.
         'runtime/plugin': resolve(__dirname, 'nuxt/runtime/plugin.ts')
@@ -23,7 +24,7 @@ export default defineConfig({
       formats: ['es', 'cjs']
     },
     rollupOptions: {
-      external: ['vue', '@nuxt/kit', '#app', /^#build\/.*/],
+      external: ['vue', '@nuxt/kit', '@overgaming/valiform', '#app', /^#build\/.*/],
       output: {
         globals: {
           vue: 'Vue'
