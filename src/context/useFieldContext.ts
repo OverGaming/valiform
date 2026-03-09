@@ -9,11 +9,5 @@ export const useFieldContextProvider = (data: FieldContext): void => {
 };
 
 export const useFieldContext = (defaultData: FieldContext | null = null): FieldContext | null => {
-  const context = inject(fieldContextKey, defaultData);
-
-  if (!context && context !== null) {
-    throw new Error('Context with fieldContextKey not found');
-  }
-
-  return context;
+  return inject(fieldContextKey, defaultData);
 };
