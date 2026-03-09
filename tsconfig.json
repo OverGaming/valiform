@@ -9,6 +9,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "exactOptionalPropertyTypes": true,
+    "rootDir": ".",
     "declaration": true,
     "declarationDir": "./dist",
     "outDir": "./dist",
@@ -16,6 +17,6 @@
     "jsxImportSource": "vue",
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src/**/*", "index.ts"],
+  "include": ["src/**/*", "nuxt/index.ts"],
   "exclude": ["node_modules", "dist"]
 }
