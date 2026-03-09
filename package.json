@@ -1,6 +1,6 @@
 {
   "name": "@overgaming/valiform",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Vue 3 form validation library",
   "keywords": [
     "form",
