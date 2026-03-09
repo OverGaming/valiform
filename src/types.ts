@@ -52,7 +52,7 @@ export interface FieldContext {
   inputProps: ComputedRef<InputProps>;
   labelProps: { for: string };
   helpProps: { id: string };
-  errorProps: { id: string; role: string; 'aria-live': string };
+  errorProps: { id: string; role: 'alert'; 'aria-live': 'polite' };
   isValid: ComputedRef<boolean>;
   isTouched: Ref<boolean>;
   isDirty: Ref<boolean>;

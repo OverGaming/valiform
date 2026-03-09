@@ -7,6 +7,7 @@ export { useLocale } from './src/composables/useLocale';
 
 export { useFormContext } from './src/context/useFormContext';
 export { useFieldContext } from './src/context/useFieldContext';
+export { useInputContext } from './src/context/useInputContext';
 
 export type {
   FieldContext,

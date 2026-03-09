@@ -37,7 +37,7 @@ export default defineNuxtConfig({
 });
 ```
 
-The Nuxt module auto-imports `<Form>`, `<Field>`, `useLocale`, `useFormContext` and `useFieldContext`.
+The Nuxt module auto-imports `<Form>`, `<Field>`, `useLocale`, `useFormContext`, `useFieldContext` and `useInputContext`.
 
 ---
 
@@ -45,7 +45,7 @@ The Nuxt module auto-imports `<Form>`, `<Field>`, `useLocale`, `useFormContext` 
 
 ### With custom components (recommended)
 
-Build a custom input component using `useFieldContext` and `defineModel`:
+Build a custom input component using `useInputContext` and `defineModel`. This makes the component work both **inside a `<Field>`** (picks up its context automatically) and **standalone with `v-model`** (creates sensible defaults):
 
 ```vue
 <!-- MyInput.vue -->
@@ -60,12 +60,12 @@ Build a custom input component using `useFieldContext` and `defineModel`:
 </template>
 
 <script setup lang="ts">
-  import { useFieldContext } from '@overgaming/valiform';
+  import { useInputContext } from '@overgaming/valiform';
 
   withDefaults(defineProps<{ type?: string }>(), { type: 'text' });
 
   const model = defineModel<string>({ default: '' });
-  const { inputValue, inputProps, error } = useFieldContext({ inputValue: model });
+  const { inputValue, inputProps, error } = useInputContext(model);
 </script>
 ```
 
@@ -244,21 +244,15 @@ const { values, isValid, errors, reset, validate, setErrors } = useFormContext()
 
 ### `useFieldContext()`
 
-Access the parent `<Field>` state from any descendant component.
+Access the parent `<Field>` state from any descendant component. Use this for components that **must always live inside a `<Field>`** (label, error, help text).
 
-Has three call signatures:
+Has two call signatures:
 
 ```ts
 // No args — component must always be inside a Field.
 // Returns FieldContext directly (no ! needed).
 // Throws at runtime if called outside a Field.
 const { labelProps } = useFieldContext();
-
-// With fallback — component works inside or outside a Field.
-// Returns FieldContext directly (no ! needed).
-// When outside a Field, the fallback object is used instead.
-const model = defineModel<string>({ default: '' });
-const { inputValue, inputProps, error } = useFieldContext({ inputValue: model });
 
 // Explicit null — handle absence of context manually.
 // Returns FieldContext | null.
@@ -270,6 +264,49 @@ TypeScript types for `FieldContext` and other interfaces are exported from the p
 
 ```ts
 import type { FieldContext, FieldState, FormContext } from '@overgaming/valiform';
+```
+
+### `useInputContext(model)`
+
+The recommended composable for building input components that work **both inside a `<Field>` and standalone with `v-model`** — without any TypeScript hacks or duplicate logic.
+
+- **Inside a `<Field>`**: returns the injected `FieldContext` (validation, error state, accessibility props all come from the Field). The `model` parameter is ignored.
+- **Standalone (no Field ancestor)**: builds a minimal `FieldContext` using the provided `model` ref. Tracks `isDirty` and `isTouched`, generates accessible IDs, and provides a working `reset()`.
+
+```ts
+const model = defineModel<string>({ default: '' });
+const {
+  inputValue,
+  inputProps,
+  labelProps,
+  helpProps,
+  errorProps,
+  error,
+  isValid,
+  isTouched,
+  isDirty,
+  validate,
+  reset
+} = useInputContext(model);
+```
+
+Example — a checkbox that works inside or outside a Field:
+
+```vue
+<!-- MyCheckbox.vue -->
+<template>
+  <label v-bind="labelProps">
+    <input v-model="inputValue" v-bind="inputProps" type="checkbox" />
+    <slot />
+  </label>
+</template>
+
+<script setup lang="ts">
+  import { useInputContext } from '@overgaming/valiform';
+
+  const model = defineModel<boolean>({ default: false });
+  const { inputValue, inputProps, labelProps } = useInputContext(model);
+</script>
 ```
 
 ### `useLocale()`

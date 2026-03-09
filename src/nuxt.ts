@@ -27,7 +27,8 @@ export default defineNuxtModule<FormsPluginOptions>({
     addImports([
       { name: 'useLocale', from: '@overgaming/valiform' },
       { name: 'useFormContext', from: '@overgaming/valiform' },
-      { name: 'useFieldContext', from: '@overgaming/valiform' }
+      { name: 'useFieldContext', from: '@overgaming/valiform' },
+      { name: 'useInputContext', from: '@overgaming/valiform' }
     ]);
   }
 });
