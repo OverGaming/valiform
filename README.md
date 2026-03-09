@@ -14,8 +14,7 @@ npm install @overgaming/valiform
 
 ```ts
 import { createApp } from 'vue';
-import { FormsPlugin } from '@overgaming/valiform';
-import { es } from '@overgaming/valiform/locales';
+import { FormsPlugin, es } from '@overgaming/valiform';
 
 const app = createApp(App);
 
@@ -63,11 +62,9 @@ Build a custom input component using `useFieldContext` and `defineModel`:
 <script setup lang="ts">
   import { useFieldContext } from '@overgaming/valiform';
 
-  defineProps({
-    type: { type: String, default: 'text' }
-  });
+  withDefaults(defineProps<{ type?: string }>(), { type: 'text' });
 
-  const model = defineModel({ type: String, default: '' });
+  const model = defineModel<string>({ default: '' });
   const { inputValue, inputProps, error } = useFieldContext({ inputValue: model });
 </script>
 ```
@@ -245,17 +242,34 @@ Access the parent `<Form>` state from any descendant component.
 const { values, isValid, errors, reset, validate, setErrors } = useFormContext();
 ```
 
-### `useFieldContext(options?)`
+### `useFieldContext()`
 
-Access the parent `<Field>` state from any descendant component. Optionally pass `{ inputValue }` to sync a local ref (e.g. from `defineModel`) bidirectionally with the field value.
+Access the parent `<Field>` state from any descendant component.
+
+Has three call signatures:
 
 ```ts
-// Basic usage
-const { inputValue, inputProps, error, isValid, isTouched, isDirty } = useFieldContext();
+// No args — component must always be inside a Field.
+// Returns FieldContext directly (no ! needed).
+// Throws at runtime if called outside a Field.
+const { labelProps } = useFieldContext();
 
-// With defineModel sync
-const model = defineModel({ type: String, default: '' });
+// With fallback — component works inside or outside a Field.
+// Returns FieldContext directly (no ! needed).
+// When outside a Field, the fallback object is used instead.
+const model = defineModel<string>({ default: '' });
 const { inputValue, inputProps, error } = useFieldContext({ inputValue: model });
+
+// Explicit null — handle absence of context manually.
+// Returns FieldContext | null.
+const ctx = useFieldContext(null);
+if (ctx) { ... }
+```
+
+TypeScript types for `FieldContext` and other interfaces are exported from the package:
+
+```ts
+import type { FieldContext, FieldState, FormContext } from '@overgaming/valiform';
 ```
 
 ### `useLocale()`
