@@ -17,6 +17,13 @@ interface NuxtModuleOptions {
    * external variables all work normally — no serialization limitations.
    */
   config?: string;
+  /**
+   * When true, the active locale is automatically synced with @nuxtjs/i18n.
+   * Valiform will use `nuxtApp.$i18n.locale` (a Ref<string>) at runtime,
+   * so changing the i18n language also changes the validation messages language.
+   * The `locale` option is used as fallback if $i18n is not available.
+   */
+  syncI18n?: boolean;
 }
 
 export default defineNuxtModule<NuxtModuleOptions>({
