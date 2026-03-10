@@ -4,10 +4,20 @@ import { FormsPlugin, registerRules } from '@overgaming/valiform';
 import { pluginOptions, valiformConfig } from '#build/valiform/options.mjs';
 
 export default defineNuxtPlugin((nuxtApp) => {
-  const opts = { ...pluginOptions };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { syncI18n, ...formsOpts } = pluginOptions;
+  const opts = { ...formsOpts };
 
   if (valiformConfig?.locales) {
     opts.locales = valiformConfig.locales;
+  }
+
+  if (syncI18n) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const i18nLocale = (nuxtApp as any).$i18n?.locale;
+    if (i18nLocale) {
+      opts.locale = i18nLocale;
+    }
   }
 
   nuxtApp.vueApp.use(FormsPlugin, opts);
