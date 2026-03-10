@@ -16,6 +16,10 @@ export type {
   FormContext,
   InputProps,
   RuleFunction,
+  RuleOptions,
+  LocaleMessageFn,
+  LocaleMessage,
+  LocaleMessages,
   FormsPluginOptions,
   ValiformConfig
 } from './types';
