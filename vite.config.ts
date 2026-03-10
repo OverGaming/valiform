@@ -19,7 +19,9 @@ export default defineConfig({
         nuxt: resolve(__dirname, 'nuxt/module.ts'),
         // Runtime plugin compiled separately so Nuxt can inject it into the user's app.
         // #app and #build/* are Nuxt virtual modules resolved at the user's build time.
-        'runtime/plugin': resolve(__dirname, 'nuxt/runtime/plugin.ts')
+        'runtime/plugin': resolve(__dirname, 'nuxt/runtime/plugin.ts'),
+        'runtime/plugin-i18n': resolve(__dirname, 'nuxt/runtime/plugin-i18n.ts'),
+        'runtime/setup': resolve(__dirname, 'nuxt/runtime/setup.ts')
       },
       formats: ['es', 'cjs']
     },

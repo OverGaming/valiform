@@ -5,6 +5,7 @@ import {
   addTemplate,
   createResolver,
   defineNuxtModule,
+  hasNuxtModule,
   resolvePath
 } from '@nuxt/kit';
 
@@ -53,7 +54,10 @@ export default defineNuxtModule<NuxtModuleOptions>({
       write: true
     });
 
-    addPlugin(resolver.resolve('./runtime/plugin'));
+    const hasI18n = hasNuxtModule('@nuxtjs/i18n');
+    const awaitsI18n = pluginOptions.syncI18n && hasI18n;
+
+    addPlugin(resolver.resolve(awaitsI18n ? './runtime/plugin-i18n' : './runtime/plugin'));
 
     addComponent({ name: 'Form', export: 'Form', filePath: '@overgaming/valiform' });
     addComponent({ name: 'Field', export: 'Field', filePath: '@overgaming/valiform' });
