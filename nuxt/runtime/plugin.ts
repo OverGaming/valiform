@@ -1,4 +1,5 @@
 import { defineNuxtPlugin } from '#app';
+import { isRef } from 'vue';
 import { FormsPlugin, registerRules } from '@overgaming/valiform';
 // @ts-ignore virtual module resolved by Nuxt at build time
 import { pluginOptions, valiformConfig } from '#build/valiform/options.mjs';
@@ -16,9 +17,9 @@ export default defineNuxtPlugin({
 
     if (syncI18n) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const i18nLocale = (nuxtApp as any).$i18n?.locale;
-      if (i18nLocale) {
-        opts.locale = i18nLocale;
+      const i18n = (nuxtApp as any).$i18n;
+      if (i18n && i18n.locale) {
+        opts.locale = isRef(i18n.locale) ? i18n.locale : i18n.locale.value || i18n.locale;
       }
     }
 
