@@ -7,14 +7,16 @@ import {
   defineNuxtModule,
   resolvePath
 } from '@nuxt/kit';
-import type { FormsPluginOptions } from '../src/types';
 
-// Extends the core plugin options with Nuxt-specific options.
-// rulesPath points to a file that default-exports a rules record — it supports
-// closures and external imports, unlike inline `rules` which uses fn.toString()
-// and therefore only works with pure functions (no external variable references).
-interface NuxtModuleOptions extends FormsPluginOptions {
-  rulesPath?: string;
+interface NuxtModuleOptions {
+  /** Default locale key (e.g. 'es', 'en'). Serializable — safe in nuxt.config. */
+  locale?: string;
+  /**
+   * Path to a file that default-exports a `defineValiformConfig({…})` object.
+   * Because Nuxt bundles this file at build time, imports, closures and
+   * external variables all work normally — no serialization limitations.
+   */
+  config?: string;
 }
 
 export default defineNuxtModule<NuxtModuleOptions>({
@@ -26,37 +28,24 @@ export default defineNuxtModule<NuxtModuleOptions>({
   defaults: {},
   async setup(options: NuxtModuleOptions) {
     const resolver = createResolver(import.meta.url);
-    const { rules, rulesPath, ...pluginOptions } = options;
+    const { config: configPath, ...pluginOptions } = options;
 
-    // Determine how to provide custom rules to the runtime plugin.
-    // rulesPath takes precedence over inline rules.
-    const lines: string[] = [`export const pluginOptions = ${JSON.stringify(pluginOptions)};`];
+    const lines: string[] = [];
 
-    if (rulesPath) {
-      // Import from a user-provided file. Closures and external imports work
-      // because Nuxt bundles this file with its own context at build time.
-      const resolved = await resolvePath(rulesPath);
-      lines.unshift(`import _customRules from ${JSON.stringify(resolved)};`);
-      lines.push('export const customRules = _customRules;');
-    } else if (rules && Object.keys(rules).length > 0) {
-      // Serialize inline functions using fn.toString(). Works only for pure
-      // functions — any reference to an external variable will throw at runtime.
-      const serialized = `{\n${Object.entries(rules)
-        .map(([name, fn]) => `  ${JSON.stringify(name)}: ${fn.toString()}`)
-        .join(',\n')}\n}`;
-      lines.push(`export const customRules = ${serialized};`);
-    } else {
-      lines.push('export const customRules = null;');
+    if (configPath) {
+      const resolved = await resolvePath(configPath);
+      lines.push(`import _config from ${JSON.stringify(resolved)};`);
     }
 
-    // Generate a virtual options file that the runtime plugin imports.
+    lines.push(`export const pluginOptions = ${JSON.stringify(pluginOptions)};`);
+    lines.push(`export const valiformConfig = ${configPath ? '_config' : 'null'};`);
+
     addTemplate({
       filename: 'valiform/options.mjs',
       getContents: () => lines.join('\n'),
       write: true
     });
 
-    // The plugin itself is a real TypeScript file — no string generation needed.
     addPlugin(resolver.resolve('./runtime/plugin'));
 
     addComponent({ name: 'Form', export: 'Form', filePath: '@overgaming/valiform' });

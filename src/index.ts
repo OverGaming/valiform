@@ -16,8 +16,11 @@ export type {
   FormContext,
   InputProps,
   RuleFunction,
-  FormsPluginOptions
+  FormsPluginOptions,
+  ValiformConfig
 } from './types';
+
+export { defineValiformConfig } from './defineValiformConfig';
 
 export { en } from './locales/en';
 export { es } from './locales/es';

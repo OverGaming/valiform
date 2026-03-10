@@ -99,3 +99,10 @@ export type FormsPluginOptions = {
   locales?: Record<string, LocaleMessages>;
   rules?: Record<string, RuleFunction>;
 };
+
+// ─── Nuxt config ─────────────────────────────────────────────────────────────
+
+export interface ValiformConfig {
+  locales?: Record<string, LocaleMessages>;
+  rules?: Record<string, RuleFunction>;
+}
