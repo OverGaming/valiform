@@ -32,10 +32,24 @@ export default defineNuxtConfig({
   modules: ['@overgaming/valiform/nuxt'],
   valiform: {
     locale: 'es',
-    locales: { es }
+    config: './valiform.config'
   }
 });
 ```
+
+```ts
+// valiform.config.ts
+import { defineValiformConfig, es, en } from '@overgaming/valiform';
+
+export default defineValiformConfig({
+  locales: { es, en },
+  rules: {
+    // custom rules with full import/closure support
+  }
+});
+```
+
+The `config` option points to a file that Nuxt bundles at build time — imports, closures and external variables all work normally. Only serializable options like `locale` go in `nuxt.config.ts`.
 
 The Nuxt module auto-imports `<Form>`, `<Field>`, `useLocale`, `useFormContext`, `useFieldContext` and `useInputContext`.
 
