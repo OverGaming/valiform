@@ -91,7 +91,7 @@ export type FormSubmitHelpers = {
   reset: () => void;
 };
 
-export type FormSubmitHandler<T extends Record<string, unknown> = Record<string, unknown>> = (
+export type FormSubmitHandler<T extends object = Record<string, unknown>> = (
   values: T,
   helpers: FormSubmitHelpers
 ) => void | Promise<void>;
