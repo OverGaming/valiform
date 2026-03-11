@@ -68,6 +68,7 @@
   import Field from '../../Field.vue';
   import CustomInput from './CustomInput.vue';
   import { useLocale } from '../../../composables/useLocale';
+  import type { FormSubmitHelpers } from '../../../types';
 
   interface FormValues {
     name: string;
@@ -78,10 +79,7 @@
 
   const props = withDefaults(
     defineProps<{
-      handleSubmit?: (
-        values: Record<string, unknown>,
-        helpers: { setErrors: (...args: unknown[]) => void; reset: () => void }
-      ) => void;
+      handleSubmit?: (values: Record<string, unknown>, helpers: FormSubmitHelpers) => void;
       initialValues?: FormValues;
     }>(),
     {

@@ -20,13 +20,10 @@
   import { useFormStateContextProvider } from '../context/useFormStateContext';
   import { useFormContextProvider } from '../context/useFormContext';
   import { getValueByPath, setValueByPath } from '../utils/valueByPath';
-  import type { FieldState } from '../types';
+  import type { FieldState, FormSubmitHelpers } from '../types';
 
   const emit = defineEmits<{
-    submit: [
-      values: Record<string, unknown>,
-      helpers: { setErrors: typeof setErrors; reset: typeof reset }
-    ];
+    submit: [values: Record<string, unknown>, helpers: FormSubmitHelpers];
   }>();
 
   const model = defineModel<Record<string, unknown>>({
@@ -59,22 +56,15 @@
     emit('submit', model.value, { setErrors, reset });
   };
 
-  const setErrors = (...args: unknown[]): void => {
-    if (args.length === 1) {
-      const errorInput = args[0];
-
-      if (typeof errorInput === 'object' && !Array.isArray(errorInput) && errorInput !== null) {
-        Object.keys(errorInput as Record<string, unknown>).forEach((key) => {
-          setErrors(key, (errorInput as Record<string, unknown>)[key]);
-        });
-        return;
-      }
-
-      errors.value = Array.isArray(errorInput) ? (errorInput as string[]) : [errorInput as string];
-    } else if (args.length === 2) {
-      const [fieldName, errorInput] = args as [string, string | string[]];
-      fields.value[fieldName]?.setErrors(errorInput);
+  const setErrors = (input: string | string[] | Record<string, string | string[]>): void => {
+    if (typeof input === 'object' && !Array.isArray(input) && input !== null) {
+      Object.keys(input).forEach((key) => {
+        fields.value[key]?.setErrors(input[key]);
+      });
+      return;
     }
+
+    errors.value = Array.isArray(input) ? input : [input];
   };
 
   const reset = (): void => {

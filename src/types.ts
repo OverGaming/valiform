@@ -64,6 +64,8 @@ export interface FieldContext {
 
 // ─── Form ─────────────────────────────────────────────────────────────────────
 
+export type SetErrorsInput = string | string[] | Record<string, string | string[]>;
+
 export interface FormStateContext {
   getFields: () => Record<string, FieldState>;
   getField: (name: string) => FieldState | undefined;
@@ -80,9 +82,19 @@ export interface FormContext {
   errors: Ref<string[]>;
   fields: Ref<Record<string, FieldState>>;
   reset: () => void;
-  setErrors: (...args: unknown[]) => void;
+  setErrors: (input: SetErrorsInput) => void;
   validate: () => void;
 }
+
+export type FormSubmitHelpers = {
+  setErrors: (input: SetErrorsInput) => void;
+  reset: () => void;
+};
+
+export type FormSubmitHandler<T extends Record<string, unknown> = Record<string, unknown>> = (
+  values: T,
+  helpers: FormSubmitHelpers
+) => void | Promise<void>;
 
 // ─── Locale ───────────────────────────────────────────────────────────────────
 
