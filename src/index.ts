@@ -14,6 +14,8 @@ export type {
   FieldContext,
   FieldState,
   FormContext,
+  FormSubmitHelpers,
+  FormSubmitHandler,
   InputProps,
   RuleFunction,
   RuleOptions,

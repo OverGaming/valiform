@@ -187,7 +187,7 @@ describe('Form', () => {
           props: {
             handleSubmit: (
               _values: Record<string, unknown>,
-              { setErrors }: { setErrors: (...args: unknown[]) => void }
+              { setErrors }: { setErrors: (input: typeof apiErrors) => void }
             ) => {
               setErrors(apiErrors);
             },
