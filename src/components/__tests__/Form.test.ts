@@ -206,6 +206,83 @@ describe('Form', () => {
         expect(await screen.findByText(apiErrors.name[0])).toBeVisible();
         expect(await screen.findByText(apiErrors.email[0])).toBeVisible();
       });
+
+      it('should clear field error when editing that field after setErrors', async () => {
+        const user = userEvent.setup();
+        const apiErrors = {
+          email: ['Email is already taken']
+        };
+
+        render(ExampleForm, {
+          global: config.global,
+          props: {
+            handleSubmit: (
+              _values: Record<string, unknown>,
+              { setErrors }: { setErrors: (input: typeof apiErrors) => void }
+            ) => {
+              setErrors(apiErrors);
+            },
+            initialValues: {
+              name: NAME_VALUE,
+              email: EMAIL_VALUE,
+              password: PASSWORD_VALUE,
+              confirmPassword: CONFIRM_PASSWORD_VALUE
+            }
+          }
+        });
+
+        const emailInput = screen.getByLabelText(EMAIL_LABEL);
+        const submitButton = screen.getByRole('button', { name: /submit/i });
+
+        await user.click(submitButton);
+        expect(await screen.findByText(apiErrors.email[0])).toBeVisible();
+
+        await user.type(emailInput, 'x');
+
+        await waitFor(() => {
+          expect(screen.queryByText(apiErrors.email[0])).not.toBeInTheDocument();
+        });
+      });
+
+      it('should only clear error of the edited field, not other fields', async () => {
+        const user = userEvent.setup();
+        const apiErrors = {
+          name: ['Name is invalid'],
+          email: ['Email is already taken']
+        };
+
+        render(ExampleForm, {
+          global: config.global,
+          props: {
+            handleSubmit: (
+              _values: Record<string, unknown>,
+              { setErrors }: { setErrors: (input: typeof apiErrors) => void }
+            ) => {
+              setErrors(apiErrors);
+            },
+            initialValues: {
+              name: NAME_VALUE,
+              email: EMAIL_VALUE,
+              password: PASSWORD_VALUE,
+              confirmPassword: CONFIRM_PASSWORD_VALUE
+            }
+          }
+        });
+
+        const emailInput = screen.getByLabelText(EMAIL_LABEL);
+        const submitButton = screen.getByRole('button', { name: /submit/i });
+
+        await user.click(submitButton);
+        expect(await screen.findByText(apiErrors.name[0])).toBeVisible();
+        expect(await screen.findByText(apiErrors.email[0])).toBeVisible();
+
+        await user.type(emailInput, 'x');
+
+        await waitFor(() => {
+          expect(screen.queryByText(apiErrors.email[0])).not.toBeInTheDocument();
+        });
+        expect(screen.getByText(apiErrors.name[0])).toBeVisible();
+      });
     });
   });
 

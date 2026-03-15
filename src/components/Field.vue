@@ -120,6 +120,9 @@
       if (!isDirty.value && value !== initialValue) {
         isDirty.value = true;
       }
+      if (manualErrors.value.length > 0) {
+        manualErrors.value = [];
+      }
     },
     onBlur: () => {
       if (!isTouched.value) {
